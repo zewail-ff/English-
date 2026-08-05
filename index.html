@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
@@ -31,7 +31,7 @@
     --radius: 24px;
     --radius-sm: 16px;
     --radius-pill: 999px;
-    --transition: 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+    --transition: 0.35s ease;
     --success: #34d399;
     --success-soft: rgba(52, 211, 153, 0.18);
     --danger: #fb7185;
@@ -43,27 +43,30 @@
 }
 
 /* Light theme – أنظف وأهدأ */
+/* نهاري جديد كليًا: ورق دافئ + تركواز */
 html:not([data-theme="dark"]) {
-    --bg: #f0f4f8;
-    --bg-grad: linear-gradient(165deg, #eef2ff 0%, #f8fafc 40%, #f0f9ff 100%);
-    --surface: #ffffff;
+    --bg: #faf6f1;
+    --bg-grad: radial-gradient(ellipse 90% 60% at 0% 0%, #fde8d8 0%, transparent 55%),
+               radial-gradient(ellipse 70% 50% at 100% 10%, #d8f3ef 0%, transparent 50%),
+               #faf6f1;
+    --surface: #fffdf9;
     --surface-solid: #ffffff;
-    --surface-2: #f8fafc;
-    --primary: #4f46e5;
-    --primary-bright: #6366f1;
-    --primary-deep: #4338ca;
-    --primary-soft: rgba(79, 70, 229, 0.1);
-    --glow: 0 6px 24px rgba(79, 70, 229, 0.18);
-    --text: #0f172a;
-    --text-light: #64748b;
-    --border: rgba(148, 163, 184, 0.35);
-    --shadow: 0 10px 30px -8px rgba(15, 23, 42, 0.1);
-    --success: #059669;
-    --success-soft: rgba(5, 150, 105, 0.1);
+    --surface-2: #f3ebe3;
+    --primary: #0d9488;
+    --primary-bright: #14b8a6;
+    --primary-deep: #0f766e;
+    --primary-soft: rgba(13, 148, 136, 0.12);
+    --glow: 0 8px 28px rgba(13, 148, 136, 0.22);
+    --text: #1c1917;
+    --text-light: #78716c;
+    --border: #e7e0d8;
+    --shadow: 0 12px 32px -10px rgba(28, 25, 23, 0.12);
+    --success: #16a34a;
+    --success-soft: rgba(22, 163, 74, 0.12);
     --danger: #e11d48;
     --danger-soft: rgba(225, 29, 72, 0.1);
-    --gold: #d97706;
-    --gold-soft: rgba(217, 119, 6, 0.12);
+    --gold: #ea580c;
+    --gold-soft: rgba(234, 88, 12, 0.12);
 }
 
 body {
@@ -77,6 +80,76 @@ body {
     transition: background 0.4s ease, color 0.3s ease;
     -webkit-font-smoothing: antialiased;
     line-height: 1.6;
+    position: relative;
+}
+/* مؤثرات خلفية متحركة للوضعين */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(167, 139, 250, 0.12) 0%, transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.1) 0%, transparent 26%),
+        radial-gradient(circle at 50% 85%, rgba(244, 114, 182, 0.08) 0%, transparent 30%);
+    animation: floatGlow 16s ease-in-out infinite alternate;
+}
+@keyframes floatGlow {
+    0% { opacity: 0.5; }
+    100% { opacity: 0.85; }
+}
+.card, .app-container > * {
+    position: relative;
+    z-index: 1;
+}
+.card {
+    animation: cardIn 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+}
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 55%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    transition: left 0.55s ease;
+}
+.btn:hover::after {
+    left: 130%;
+}
+.quiz-option, .type-row, .letter-tile {
+    transition: transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+.quiz-option:hover, .type-row:hover {
+    transform: translateY(-2px);
+}
+.letter-tile:hover {
+    box-shadow: 0 0 14px rgba(167, 139, 250, 0.4);
+}
+.progress-fill {
+    background-size: 200% 100% !important;
+    animation: progressGlow 2.8s ease infinite;
+}
+h1 {
+    animation: titleShine 4s ease-in-out infinite alternate;
+    background-size: 200% auto;
+}
+@keyframes pulseSoft {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.25); }
+    50% { box-shadow: 0 0 24px 4px rgba(167, 139, 250, 0.35); }
+}
+.badge-primary {
+    animation: pulseSoft 3s ease-in-out infinite;
+}
+.theme-toggle {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.theme-toggle:hover {
+    box-shadow: 0 0 18px rgba(167, 139, 250, 0.35);
 }
 
 .app-container {
@@ -99,23 +172,227 @@ body {
     border: 1px solid var(--border);
 }
 html:not([data-theme="dark"]) .card {
-    background: #ffffff;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
-    border-color: rgba(148, 163, 184, 0.25);
+    background: rgba(255, 253, 249, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px -8px rgba(28, 25, 23, 0.12),
+                0 0 0 1px rgba(255,255,255,0.8) inset;
+    border: 1px solid rgba(231, 224, 216, 0.9);
+    border-radius: 22px;
+    animation: cardIn 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+}
+html:not([data-theme="dark"]) .card:hover {
+    box-shadow: 0 12px 32px -10px rgba(13, 148, 136, 0.15),
+                0 0 0 1px rgba(255,255,255,0.9) inset;
 }
 html:not([data-theme="dark"]) body {
-    background: #f0f4f8;
-    background-image: linear-gradient(165deg, #eef2ff 0%, #f8fafc 45%, #f0f9ff 100%);
+    background: #faf6f1;
+    background-image:
+        radial-gradient(ellipse 80% 50% at 5% -5%, rgba(253, 186, 116, 0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 95% 5%, rgba(45, 212, 191, 0.35) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 50% 100%, rgba(251, 146, 60, 0.2) 0%, transparent 50%),
+        #faf6f1;
+}
+html:not([data-theme="dark"]) body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(20, 184, 166, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.07) 0%, transparent 25%);
+    animation: ambientPulse 8s ease-in-out infinite alternate;
+    z-index: 0;
+}
+@keyframes ambientPulse {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+html:not([data-theme="dark"]) h1 {
+    background: linear-gradient(120deg, #0f766e 0%, #0d9488 40%, #ea580c 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleShine 4s ease-in-out infinite alternate;
+}
+@keyframes titleShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 100% center; }
+}
+html:not([data-theme="dark"]) .btn {
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    box-shadow: 0 6px 22px rgba(13, 148, 136, 0.35),
+                0 0 20px rgba(20, 184, 166, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+html:not([data-theme="dark"]) .btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+    transition: left 0.5s ease;
+}
+html:not([data-theme="dark"]) .btn:hover::after {
+    left: 120%;
+}
+html:not([data-theme="dark"]) .btn:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 10px 32px rgba(13, 148, 136, 0.45),
+                0 0 28px rgba(20, 184, 166, 0.4);
+    transform: translateY(-2px);
 }
 html:not([data-theme="dark"]) .btn-outline {
-    background: #fff;
-    border-width: 1.5px;
+    background: rgba(255,255,255,0.6);
+    border: 2px solid rgba(13, 148, 136, 0.35);
+    color: #0f766e;
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+}
+html:not([data-theme="dark"]) .btn-outline:hover {
+    background: #f0fdfa;
+    border-color: #0d9488;
+    color: #0f766e;
+    box-shadow: 0 0 20px rgba(13, 148, 136, 0.2);
+}
+html:not([data-theme="dark"]) .btn-success {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    box-shadow: 0 6px 20px rgba(22, 163, 74, 0.35), 0 0 18px rgba(34, 197, 94, 0.25);
+}
+html:not([data-theme="dark"]) .btn-gold {
+    background: linear-gradient(135deg, #ea580c, #f97316);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.35), 0 0 18px rgba(249, 115, 22, 0.25);
 }
 html:not([data-theme="dark"]) .quiz-option {
-    background: #fff;
+    background: rgba(255,255,255,0.9);
+    border: 2px solid #e7e0d8;
+    transition: all 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+html:not([data-theme="dark"]) .quiz-option:hover {
+    border-color: #0d9488;
+    background: #f0fdfa;
+    box-shadow: 0 0 18px rgba(13, 148, 136, 0.2);
+    transform: scale(1.02);
 }
 html:not([data-theme="dark"]) .quiz-input {
     background: #fff;
+    border: 2px solid #e7e0d8;
+}
+html:not([data-theme="dark"]) .quiz-input:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15), 0 0 20px rgba(13, 148, 136, 0.15);
+}
+html:not([data-theme="dark"]) .badge {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+html:not([data-theme="dark"]) .badge-primary {
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(13, 148, 136, 0.35);
+}
+html:not([data-theme="dark"]) .progress-bar {
+    background: #e7e0d8;
+    overflow: hidden;
+}
+html:not([data-theme="dark"]) .progress-fill {
+    background: linear-gradient(90deg, #0f766e, #14b8a6, #ea580c);
+    background-size: 200% 100%;
+    animation: progressGlow 2.5s ease infinite;
+}
+@keyframes progressGlow {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+html:not([data-theme="dark"]) .theme-toggle {
+    background: rgba(255,253,249,0.9);
+    border-color: #e7e0d8;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+html:not([data-theme="dark"]) .theme-toggle:hover {
+    box-shadow: 0 0 20px rgba(13, 148, 136, 0.25);
+}
+html:not([data-theme="dark"]) .letter-tile:hover {
+    box-shadow: 0 0 16px rgba(13, 148, 136, 0.4);
+}
+html:not([data-theme="dark"]) .stat-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+html:not([data-theme="dark"]) .stat-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(13, 148, 136, 0.15);
+}
+
+/* قائمة اختيار نوع السؤال — X → ✓ */
+.type-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 16px 0 8px;
+}
+.type-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    background: var(--surface-solid);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+    text-align: right;
+}
+.type-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.type-row input { display: none; }
+.type-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+    background: rgba(148, 163, 184, 0.2);
+    color: rgba(100, 116, 139, 0.5);
+    border: 2px solid rgba(148, 163, 184, 0.35);
+}
+.type-row .type-label {
+    font-weight: 700;
+    font-size: 1.05rem;
+    flex: 1;
+}
+.type-row .type-desc {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    font-weight: 500;
+    display: block;
+    margin-top: 2px;
+}
+.type-row.active {
+    border-color: var(--success);
+    background: var(--success-soft);
+    box-shadow: 0 0 0 3px var(--success-soft), 0 0 22px rgba(52, 211, 153, 0.18);
+}
+.type-row.active .type-mark {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+    box-shadow: 0 0 18px rgba(52, 211, 153, 0.5);
+    transform: scale(1.1);
 }
 
 /* ===== TYPOGRAPHY ===== */
@@ -225,6 +502,318 @@ h3 {
 /* ===== GRID ===== */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+/* ===== HOME – تصميم جديد كليًا (نيون + داشبورد) ===== */
+.neon-orbs {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: orbFloat 18s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+}
+.orb-1 {
+    width: 300px; height: 300px;
+    background: #7c3aed;
+    top: -80px; right: -60px;
+    animation-duration: 20s;
+}
+.orb-2 {
+    width: 220px; height: 220px;
+    background: #ec4899;
+    bottom: 8%; left: -70px;
+    animation-duration: 24s;
+    animation-delay: -4s;
+}
+.orb-3 {
+    width: 180px; height: 180px;
+    background: #38bdf8;
+    top: 50%; right: 0;
+    animation-duration: 22s;
+    animation-delay: -8s;
+}
+@keyframes orbFloat {
+    0% { transform: translate(0, 0); opacity: 0.28; }
+    100% { transform: translate(-24px, 28px); opacity: 0.48; }
+}
+
+/* هيدر أنعم — بدون مربع أيقونة */
+.hero-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    padding: 22px 20px 18px;
+    margin-top: 6px;
+    margin-bottom: 18px;
+    background: rgba(15, 10, 30, 0.55);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    box-shadow:
+        0 0 40px rgba(124, 58, 237, 0.22),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    animation: cardIn 0.7s ease both;
+}
+.hero-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.12), transparent 45%, rgba(236, 72, 153, 0.06));
+    pointer-events: none;
+}
+.hero-glow {
+    position: absolute;
+    top: -30%; left: 30%;
+    width: 50%; height: 90%;
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.28) 0%, transparent 70%);
+    animation: heroPulse 8s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+@keyframes heroPulse {
+    0% { opacity: 0.45; }
+    100% { opacity: 0.85; }
+}
+.hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+.hero-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.hero-icon-spin { display: none; }
+@keyframes iconBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+.hero-title {
+    font-size: 1.75rem;
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+    text-shadow: 0 0 18px rgba(167, 139, 250, 0.4);
+}
+.hero-sub {
+    color: var(--text-light);
+    font-size: 0.88rem;
+    display: block;
+    margin-top: 2px;
+}
+.hero-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.neon-badge {
+    box-shadow: 0 0 16px rgba(167, 139, 250, 0.45);
+    animation: pulseSoft 3s ease-in-out infinite;
+}
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+    position: relative;
+    z-index: 1;
+}
+.hero-stat {
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.hero-stat:hover {
+    border-color: rgba(192, 132, 252, 0.45);
+    box-shadow: 0 0 18px rgba(124, 58, 237, 0.25);
+}
+.hero-stat-icon { display: none; }
+.hero-stat-val {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--primary-bright);
+    text-shadow: 0 0 12px rgba(167, 139, 250, 0.5);
+}
+.hero-stat-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-top: 2px;
+    display: block;
+}
+
+/* قائمة سلسة بدون إيموجي */
+.menu-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 14px;
+}
+.menu-tile {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: 54px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.1) 0%, rgba(255,255,255,0.03) 50%);
+    color: var(--text);
+    font-family: var(--font);
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: right;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+    animation: menuIn 0.55s ease both;
+    animation-delay: calc(var(--i, 0) * 0.05s);
+    backdrop-filter: blur(12px);
+}
+.menu-tile::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 18%;
+    width: 3px; height: 64%;
+    border-radius: 3px 0 0 3px;
+    background: rgba(167, 139, 250, 0.7);
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+    opacity: 0.65;
+    transition: opacity 0.35s ease, box-shadow 0.35s ease;
+}
+@keyframes menuIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.menu-tile:hover {
+    border-color: rgba(192, 132, 252, 0.5);
+    box-shadow: 0 0 24px rgba(124, 58, 237, 0.28);
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.2) 0%, rgba(167, 139, 250, 0.08) 55%);
+}
+.menu-tile:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 14px rgba(192, 132, 252, 0.8);
+}
+.menu-tile:active { opacity: 0.92; }
+.menu-tile-icon { display: none; }
+.menu-tile-text {
+    line-height: 1.35;
+    flex: 1;
+}
+.menu-tile-shine { display: none; }
+.menu-tile-primary {
+    border-color: rgba(167, 139, 250, 0.35);
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.22) 0%, rgba(167, 139, 250, 0.08) 50%);
+}
+.menu-tile-primary::before {
+    background: #c084fc;
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.7);
+}
+.menu-tile-primary:hover {
+    box-shadow: 0 0 28px rgba(124, 58, 237, 0.38);
+}
+.menu-tile-gold {
+    border-color: rgba(251, 191, 36, 0.35);
+    background: linear-gradient(90deg, rgba(217, 119, 6, 0.2) 0%, rgba(251, 191, 36, 0.07) 50%);
+}
+.menu-tile-gold::before {
+    background: #fbbf24;
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
+}
+.menu-tile-gold:hover {
+    box-shadow: 0 0 28px rgba(251, 191, 36, 0.32);
+    border-color: rgba(251, 191, 36, 0.55);
+}
+
+.footer-tip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    color: var(--text-light);
+    font-size: 0.85rem;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.08);
+}
+.footer-tip-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--primary-bright);
+    box-shadow: 0 0 14px var(--primary-bright);
+    animation: pulseSoft 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+html:not([data-theme="dark"]) .hero-card {
+    background: rgba(255, 253, 249, 0.95);
+    box-shadow: 0 12px 40px rgba(13, 148, 136, 0.15);
+}
+html:not([data-theme="dark"]) .hero-card::before {
+    background: linear-gradient(120deg, #0d9488, #ea580c, #14b8a6, #0d9488);
+    opacity: 0.7;
+}
+html:not([data-theme="dark"]) .hero-icon-spin {
+    background: rgba(13, 148, 136, 0.12);
+    border-color: rgba(13, 148, 136, 0.45);
+    box-shadow: 0 0 0 6px rgba(13, 148, 136, 0.1), 0 0 24px rgba(13, 148, 136, 0.3);
+}
+html:not([data-theme="dark"]) .hero-stat {
+    background: rgba(13, 148, 136, 0.06);
+    border-color: rgba(13, 148, 136, 0.2);
+}
+html:not([data-theme="dark"]) .hero-stat-val { color: #0f766e; text-shadow: none; }
+html:not([data-theme="dark"]) .menu-tile {
+    background: linear-gradient(90deg, rgba(13, 148, 136, 0.1) 0%, #fff 40%);
+    border-color: #e7e0d8;
+    color: #1c1917;
+}
+html:not([data-theme="dark"]) .menu-tile::before {
+    background: linear-gradient(180deg, #14b8a6, #0d9488);
+    box-shadow: 0 0 10px rgba(13, 148, 136, 0.5);
+}
+html:not([data-theme="dark"]) .menu-tile:hover {
+    border-color: #0d9488;
+    box-shadow: 0 0 24px rgba(13, 148, 136, 0.22);
+    background: linear-gradient(90deg, rgba(13, 148, 136, 0.18) 0%, #f0fdfa 50%);
+}
+html:not([data-theme="dark"]) .menu-tile-primary {
+    background: linear-gradient(90deg, rgba(13, 148, 136, 0.18) 0%, #fff 50%);
+    border-color: rgba(13, 148, 136, 0.35);
+}
+html:not([data-theme="dark"]) .menu-tile-gold {
+    background: linear-gradient(90deg, rgba(234, 88, 12, 0.15) 0%, #fff 50%);
+    border-color: rgba(234, 88, 12, 0.35);
+}
+html:not([data-theme="dark"]) .menu-tile-gold::before {
+    background: linear-gradient(180deg, #f97316, #ea580c);
+}
+html:not([data-theme="dark"]) .menu-tile-icon {
+    background: rgba(13, 148, 136, 0.1);
+    border-color: rgba(13, 148, 136, 0.25);
+}
+html:not([data-theme="dark"]) .orb { opacity: 0.22; }
+html:not([data-theme="dark"]) .footer-tip {
+    background: #fffdf9;
+    border-color: #e7e0d8;
+}
 
 /* ===== PROGRESS ===== */
 .progress-bar {
@@ -473,7 +1062,8 @@ h3 {
     color: var(--text);
 }
 .theme-toggle:hover {
-    transform: scale(1.1) rotate(15deg);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.35);
 }
 
 /* ===== SCROLL ===== */
@@ -529,44 +1119,76 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
 </style>
 </head>
 <body>
-<button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
+<button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">☀️</button>
+<div class="neon-orbs" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+</div>
 
 <div class="app-container" id="app">
     <!-- ===== HEADER ===== -->
-    <header class="card flex-between" style="margin-top:8px;">
-        <div>
-            <h1>📚 WordMaster</h1>
-            <span class="text-muted">منهج الثانوية العامة</span>
+    <header class="hero-card">
+        <div class="hero-glow"></div>
+        <div class="hero-top">
+            <div class="hero-title-wrap">
+                <div>
+                    <h1 class="hero-title">WordMaster</h1>
+                    <span class="hero-sub">منهج الثانوية العامة</span>
+                </div>
+            </div>
+            <div class="hero-badges">
+                <span class="badge neon-badge" id="totalWordsBadge">0 كلمة</span>
+                <span class="badge badge-primary neon-badge" id="levelBadge">Lv.1</span>
+            </div>
         </div>
-        <div class="flex gap-8">
-            <span class="badge" id="totalWordsBadge">0 كلمة</span>
-            <span class="badge badge-primary" id="levelBadge">Lv.1</span>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-val" id="scoreDisplay">0</span>
+                <span class="hero-stat-label">نقطة</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-val" id="comboDisplay">0</span>
+                <span class="hero-stat-label">Combo</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-val" id="achievementCount">0</span>
+                <span class="hero-stat-label">إنجاز</span>
+            </div>
         </div>
     </header>
 
-    <!-- ===== STATS BAR ===== -->
-    <div class="card flex-between" style="padding:12px 18px;">
-        <span>⭐ <span id="scoreDisplay">0</span> نقطة</span>
-        <span>🔥 <span id="comboDisplay">0</span> Combo</span>
-        <span>🏆 <span id="achievementCount">0</span></span>
-    </div>
-
     <!-- ===== MAIN MENU ===== -->
     <div id="menuSection">
-        <div class="card">
-            <div class="grid-2">
-                <button class="btn btn-block" data-screen="unitSelect">كلمات وحده علي بعضها</button>
-                <button class="btn btn-block" data-screen="lessonSelect">كلمات درس لوحده</button>
-                <button class="btn btn-block btn-outline" data-screen="multiSelect">كذا درس علي بعض</button>
-                <button class="btn btn-block btn-gold" data-screen="fullExam">كلمات المنهج كله</button>
-                <button class="btn btn-block btn-outline" data-screen="wrongWords">كلمات غلطت فيها مره</button>
-                <button class="btn btn-block btn-outline" data-screen="hardWords">كلمات غلطت فيها كتير</button>
-                <button class="btn btn-block btn-outline" data-screen="stats">📊 الإحصائيات</button>
-                <button class="btn btn-block btn-outline" data-screen="settings">⚙️ إعدادات</button>
-            </div>
+        <div class="menu-grid">
+            <button class="menu-tile menu-tile-primary" data-screen="unitSelect" style="--i:0">
+                <span class="menu-tile-text">كلمات وحده علي بعضها</span>
+            </button>
+            <button class="menu-tile menu-tile-primary" data-screen="lessonSelect" style="--i:1">
+                <span class="menu-tile-text">كلمات درس لوحده</span>
+            </button>
+            <button class="menu-tile" data-screen="multiSelect" style="--i:2">
+                <span class="menu-tile-text">كذا درس علي بعض</span>
+            </button>
+            <button class="menu-tile menu-tile-gold" data-screen="fullExam" style="--i:3">
+                <span class="menu-tile-text">كلمات المنهج كله</span>
+            </button>
+            <button class="menu-tile" data-screen="wrongWords" style="--i:4">
+                <span class="menu-tile-text">كلمات غلطت فيها مره</span>
+            </button>
+            <button class="menu-tile" data-screen="hardWords" style="--i:5">
+                <span class="menu-tile-text">كلمات غلطت فيها كتير</span>
+            </button>
+            <button class="menu-tile" data-screen="stats" style="--i:6">
+                <span class="menu-tile-text">الإحصائيات</span>
+            </button>
+            <button class="menu-tile" data-screen="settings" style="--i:7">
+                <span class="menu-tile-text">إعدادات</span>
+            </button>
         </div>
-        <div class="card text-center text-muted" style="font-size:0.9rem;">
-            <span>🎯 احفظ الكلمات بطريقة ممتعة • 3 أنواع أسئلة • نظام نقاط وإنجازات</span>
+        <div class="footer-tip">
+            <span class="footer-tip-dot"></span>
+            <span>احفظ الكلمات بطريقة ممتعة • 3 أنواع أسئلة • نظام نقاط وإنجازات</span>
         </div>
     </div>
 
@@ -1573,20 +2195,24 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
         answered: false
     };
 
-    function startQuiz(words, type = null) {
+    function startQuiz(words, type = null, allowedTypes = null) {
         if (!words || words.length === 0) {
             alert('لا توجد كلمات للامتحان!');
             return;
         }
         words = shuffleArray([...words]);
-        const types = ['write', 'choice', 'order'];
+        const allTypes = ['write', 'choice', 'order'];
+        let types = allowedTypes && allowedTypes.length ? allowedTypes.filter(t => allTypes.includes(t)) : allTypes;
+        if (!types.length) types = allTypes;
+        const firstType = (type && type !== 'random') ? type : types[Math.floor(Math.random() * types.length)];
         currentQuiz = {
             words: words,
             currentIndex: 0,
             total: words.length,
             correctCount: 0,
             wrongCount: 0,
-            type: type || types[Math.floor(Math.random() * types.length)],
+            type: firstType,
+            allowedTypes: types,
             answered: false
         };
         menuSection.style.display = 'none';
@@ -1602,7 +2228,7 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
         const qType = currentQuiz.type;
         let actualType = qType;
         if (qType === 'random') {
-            const types = ['write', 'choice', 'order'];
+            const types = currentQuiz.allowedTypes || ['write', 'choice', 'order'];
             actualType = types[Math.floor(Math.random() * types.length)];
         }
         let questionHTML = '';
@@ -1676,22 +2302,47 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
     }
 
     function generateChoices(correctWord, allWords) {
-        let choices = [correctWord.en];
-        const similar = allWords.filter(w => w.en !== correctWord.en && w.en.length === correctWord.en.length);
-        shuffleArray(similar);
-        for (let w of similar) {
-            if (choices.length < 4) {
-                choices.push(w.en);
-            }
+        const correct = correctWord.en;
+        const targetLen = correct.replace(/\s+/g, '').length;
+        const firstLetter = correct[0].toLowerCase();
+        const pool = allWords.filter(w => w.en !== correct);
+
+        function score(w) {
+            const e = w.en;
+            const len = e.replace(/\s+/g, '').length;
+            let s = 0;
+            // نفس طول تقريبي
+            if (Math.abs(len - targetLen) <= 1) s += 5;
+            else if (Math.abs(len - targetLen) <= 3) s += 2;
+            // نفس الحرف الأول
+            if (e[0] && e[0].toLowerCase() === firstLetter) s += 4;
+            // حروف مشتركة
+            const setC = new Set(correct.toLowerCase().replace(/\s/g, ''));
+            const setE = new Set(e.toLowerCase().replace(/\s/g, ''));
+            let shared = 0;
+            setC.forEach(ch => { if (setE.has(ch)) shared++; });
+            s += Math.min(shared, 4);
+            // يبدأ بنفس مقطعين
+            if (e.toLowerCase().slice(0, 2) === correct.toLowerCase().slice(0, 2)) s += 3;
+            return s;
         }
-        while (choices.length < 4) {
-            const rand = allWords[Math.floor(Math.random() * allWords.length)];
-            if (rand && !choices.includes(rand.en)) {
-                choices.push(rand.en);
-            } else {
-                choices.push('????');
-            }
+
+        const ranked = pool
+            .map(w => ({ w, s: score(w) }))
+            .sort((a, b) => b.s - a.s);
+
+        let choices = [correct];
+        for (const item of ranked) {
+            if (choices.length >= 4) break;
+            if (!choices.includes(item.w.en)) choices.push(item.w.en);
         }
+        // احتياطي
+        while (choices.length < 4 && pool.length) {
+            const rand = pool[Math.floor(Math.random() * pool.length)];
+            if (rand && !choices.includes(rand.en)) choices.push(rand.en);
+            else break;
+        }
+        while (choices.length < 4) choices.push('????');
         shuffleArray(choices);
         return choices;
     }
@@ -1936,11 +2587,11 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
             if (currentQuiz.currentIndex >= currentQuiz.total) {
                 finishQuiz();
             } else {
-                const types = ['write', 'choice', 'order'];
+                const types = currentQuiz.allowedTypes || ['write', 'choice', 'order'];
                 currentQuiz.type = types[Math.floor(Math.random() * types.length)];
                 renderQuizQuestion();
             }
-        }, 1500);
+        }, delay);
     }
 
     function finishQuiz() {
@@ -2088,30 +2739,84 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
     // ============================================================
     //  12. EXAM PREP
     // ============================================================
+    function getSelectedQuizTypes() {
+        const types = [];
+        if (document.getElementById('typeWrite')?.checked) types.push('write');
+        if (document.getElementById('typeChoice')?.checked) types.push('choice');
+        if (document.getElementById('typeOrder')?.checked) types.push('order');
+        return types.length ? types : ['write', 'choice', 'order'];
+    }
+
+    function bindTypeRows() {
+        document.querySelectorAll('.type-row').forEach(row => {
+            row.addEventListener('click', function() {
+                const input = this.querySelector('input');
+                const mark = this.querySelector('.type-mark');
+                if (!input || !mark) return;
+                input.checked = !input.checked;
+                this.classList.toggle('active', input.checked);
+                mark.textContent = input.checked ? '✓' : '✕';
+            });
+        });
+    }
+
     function showExamPrep(words, title) {
         window._prepWords = words;
         const html = `
             <div class="card text-center">
                 <h2>📝 ${title}</h2>
-                <p>عدد الكلمات: <strong>${words.length}</strong></p>
-                <div class="flex gap-8" style="justify-content:center;margin:14px 0;flex-wrap:wrap;">
+                <p class="text-muted">عدد الكلمات: <strong style="color:var(--text)">${words.length}</strong></p>
+                <p style="font-weight:700;margin-top:18px;margin-bottom:10px;">اختر نوع الأسئلة الذي تريده</p>
+                <div class="type-list">
+                    <div class="type-row" data-type="choice">
+                        <input type="checkbox" id="typeChoice">
+                        <div class="type-mark">✕</div>
+                        <div style="flex:1;text-align:right;">
+                            <span class="type-label">اختيارات</span>
+                        </div>
+                    </div>
+                    <div class="type-row" data-type="write">
+                        <input type="checkbox" id="typeWrite">
+                        <div class="type-mark">✕</div>
+                        <div style="flex:1;text-align:right;">
+                            <span class="type-label">كتابة</span>
+                        </div>
+                    </div>
+                    <div class="type-row" data-type="order">
+                        <input type="checkbox" id="typeOrder">
+                        <div class="type-mark">✕</div>
+                        <div style="flex:1;text-align:right;">
+                            <span class="type-label">ترتيب حروف</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-8" style="justify-content:center;margin:18px 0 8px;flex-wrap:wrap;">
                     <button class="btn btn-outline" id="showWordsList">👀 عرض الكلمات</button>
-                    <button class="btn btn-success" id="startPrepExam">🚀 ابدأ الامتحان مباشرة</button>
+                    <button class="btn btn-success" id="startPrepExam">🚀 ابدأ الامتحان</button>
                 </div>
                 <button class="btn btn-outline btn-block mt-8" data-action="home">🔙 رجوع</button>
             </div>
         `;
         showScreen(html);
         menuSection.style.display = 'none';
+        bindTypeRows();
         document.getElementById('startPrepExam')?.addEventListener('click', function() {
-            startQuiz(words, 'random');
+            const types = getSelectedQuizTypes();
+            if (!document.getElementById('typeWrite')?.checked &&
+                !document.getElementById('typeChoice')?.checked &&
+                !document.getElementById('typeOrder')?.checked) {
+                alert('اختَر نوع سؤال واحد على الأقل');
+                return;
+            }
+            startQuiz(words, 'random', types);
         });
         document.getElementById('showWordsList')?.addEventListener('click', function() {
-            showWordsPreview(words, title);
+            const types = getSelectedQuizTypes();
+            showWordsPreview(words, title, types);
         });
     }
 
-    function showWordsPreview(words, title) {
+    function showWordsPreview(words, title, selectedTypes) {
         let listHTML = '';
         words.forEach((w, i) => {
             listHTML += `<div class="stat-row" style="text-align:right;">
@@ -2133,7 +2838,7 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
         showScreen(html);
         menuSection.style.display = 'none';
         document.getElementById('startFromPreview')?.addEventListener('click', function() {
-            startQuiz(words, 'random');
+            startQuiz(words, 'random', selectedTypes || ['write', 'choice', 'order']);
         });
         document.getElementById('backToPrep')?.addEventListener('click', function() {
             showExamPrep(words, title);
@@ -2261,10 +2966,15 @@ header.card { padding-top: 20px; padding-bottom: 18px; }
     //  16. INIT
     // ============================================================
     loadState();
+    // الوضع الافتراضي: ليلي
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
+    if (savedTheme === '' || savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', '');
+        document.getElementById('themeToggle').textContent = '🌙';
+    } else {
         document.documentElement.setAttribute('data-theme', 'dark');
         document.getElementById('themeToggle').textContent = '☀️';
+        if (savedTheme !== 'dark') localStorage.setItem('theme', 'dark');
     }
     updateUI();
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
